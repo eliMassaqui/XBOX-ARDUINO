@@ -35,7 +35,7 @@ import sys
 
 # ───── SERIAL ─────
 try:
-    ser = serial.Serial('COM3', 115200, timeout=0.1)
+    ser = serial.Serial('COM4', 115200, timeout=0.1)
     time.sleep(2)
 except:
     print("Erro: Arduino não encontrado.")
