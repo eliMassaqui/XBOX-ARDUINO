@@ -1,35 +1,33 @@
-╔══════════════════════════════════════════════════════╗
-║           🎮 ARDUINO XBOX BRIDGE + SERVO 🤖         ║
-╚══════════════════════════════════════════════════════╝
+# 🎮 ARDUINO XBOX BRIDGE + SERVO 🤖
 
-Objetivo: Controlar Arduino via Xbox Controller  
-Funcionalidades:  
-• RT → Acelera / LT → Ré  
-• Botão A → LED Azul  
-• Botão B → LED Vermelho  
-• Servo: 0°–180° baseado em gatilhos  
-• Comunicação Serial robusta (~60Hz)
+## Objetivo
+Controlar Arduino via Xbox Controller.
 
+## Funcionalidades
+- **RT** → Acelera / **LT** → Ré  
+- **Botão A** → LED Azul  
+- **Botão B** → LED Vermelho  
+- **Servo:** 0°–180° baseado em gatilhos  
+- Comunicação Serial robusta (~60Hz)
 
-════════════════════════════════════════════════════════
-🛠 CONFIGURAÇÃO SERIAL / PYTHON
-════════════════════════════════════════════════════════
+---
 
-- Porta COM do Arduino: 'COM3' (alterar conforme necessário)  
-- Baudrate: 115200  
-- Biblioteca Python: pygame + serial  
+## 🛠 Configuração Serial / Python
+- **Porta COM do Arduino:** `'COM3'` (alterar conforme necessário)  
+- **Baudrate:** 115200  
+- **Bibliotecas Python:** `pygame`, `serial`  
 - Deadzone e normalização aplicada aos gatilhos  
 
-Exemplo de mapeamento:
-• RT: soma +90°  
-• LT: subtrai -90°  
-• 90° = centro
+**Exemplo de mapeamento:**
+- RT: soma +90°  
+- LT: subtrai -90°  
+- 90° = centro
 
+---
 
-════════════════════════════════════════════════════════
-📜 CÓDIGO PYTHON (BRIDGE)
-════════════════════════════════════════════════════════
+## 📜 Código Python (Bridge)
 
+```python
 import pygame
 import serial
 import time
@@ -83,11 +81,9 @@ except KeyboardInterrupt:
     print("Encerrando...")
     ser.close()
     pygame.quit()
+```
 
-════════════════════════════════════════════════════════
-🛠 ARDUINO: Servo + LEDs
-════════════════════════════════════════════════════════
-
+```wiring
 #include <Servo.h>
 
 Servo meuServo;
@@ -128,12 +124,4 @@ void loop() {
     }
   }
 }
-
-════════════════════════════════════════════════════════
-🔄 PRÓXIMOS PASSOS
-
-• Expandir suporte para múltiplos servos/motores  
-• Criar protocolo Serial mais compacto (ex: S90;A1;B0\n)  
-• Implementar suavização (ramp-up/ramp-down) para movimentos  
-• Integrar LEDs indicadores adicionais para feedback visual  
-• Possível controle de braço robótico ou veículo diferencial
+```
