@@ -13,7 +13,7 @@ Controlar Arduino via Xbox Controller.
 ---
 
 ## 🛠 Configuração Serial / Python
-- **Porta COM do Arduino:** `'COM3'` (alterar conforme necessário)  
+- **Porta COM do Arduino:** `'COM4'` (alterar conforme necessário)  
 - **Baudrate:** 115200  
 - **Bibliotecas Python:** `pygame`, `serial`  
 - Deadzone e normalização aplicada aos gatilhos  
