@@ -83,6 +83,8 @@ except KeyboardInterrupt:
     pygame.quit()
 ```
 
+## 🛠 Arduino: Servo + LEDs
+
 ```cpp
 #include <Servo.h>
 
