@@ -1,59 +1,55 @@
-Arduino Xbox Controller Bridge 🎮 🤖
-Este projeto permite controlar um Arduino Uno utilizando um comando de Xbox (ou compatíveis como o BSP-G6) via Bluetooth, utilizando Python como uma ponte (bridge) de comunicação Serial.
+# Arduino Xbox Controller Bridge 🎮 🤖
+
+Este projeto permite controlar um Arduino Uno utilizando um controle Xbox (ou compatíveis como o BSP-G6) via Bluetooth, utilizando Python como ponte (bridge) de comunicação Serial.
 
 O diferencial deste projeto é o mapeamento realista que trata gatilhos analógicos, zonas mortas (deadzones) e a conversão de sinais para o padrão PWM do Arduino.
 
-🚀 Funcionalidades
-Mapeamento Fiel: Identificação de todos os botões (A, B, X, Y, LB, RB, Start, Select).
+---
 
-Analógicos Graduais: Conversão de eixos (-1.0 a 1.0) para valores de 8 bits (0 a 255).
+## 🚀 Funcionalidades
 
-Tratamento de Gatilhos: Escalonamento dos gatilhos LT e RT de 0% a 100%.
+- **Mapeamento Fiel:** Identificação de todos os botões (A, B, X, Y, LB, RB, Start, Select).  
+- **Analógicos Graduais:** Conversão de eixos (-1.0 a 1.0) para valores de 8 bits (0 a 255).  
+- **Tratamento de Gatilhos:** Escalonamento dos gatilhos LT e RT de 0% a 100%.  
+- **Comunicação Serial Robusta:** Protocolo de mensagens curtas para baixa latência.  
+- **Filtro de Deadzone:** Evita movimentos involuntários causados por ruídos nos analógicos.
 
-Comunicação Serial Robusta: Protocolo de mensagens curtas para baixa latência.
+---
 
-Filtro de Deadzone: Evita movimentos involuntários causados por ruídos nos analógicos.
+## 🛠️ Requisitos
 
-🛠️ Requisitos
-Hardware:
+### Hardware
+- Arduino Uno (ou qualquer placa compatível)  
+- Controle Xbox com suporte a Bluetooth (ou modo X-Input)  
+- Cabo USB para conexão Arduino-PC  
 
-Arduino Uno (ou qualquer placa compatível).
+### Software
+- Python 3.x  
+- Biblioteca **Pygame**: `pip install pygame`  
+- Biblioteca **PySerial**: `pip install pyserial`  
 
-Comando Xbox com suporte a Bluetooth (ou modo X-Input).
+---
 
-Cabo USB para conexão Arduino-PC.
+## 🎮 Configuração do Controle
 
-Software:
+Para que o mapeamento funcione corretamente, o controle deve ser reconhecido pelo Windows como **Xbox Wireless Controller**.
 
-Python 3.x
+1. Desligue o controle.  
+2. Segure **RB + HOME** (ou a combinação específica do seu modelo) para entrar no modo X-Input.  
+3. No Windows, execute `joy.cpl` para verificar se os botões respondem corretamente.
 
-Biblioteca Pygame (pip install pygame)
+**Como resolver o modo do controle no BSP-G6:**
 
-Biblioteca PySerial (pip install pyserial)
+1. Desligue o Bluetooth do PC.  
+2. Desligue o controle.  
+3. Segure o botão **RB (R1)** e, enquanto segura, aperte **HOME** para ligar (as luzes devem piscar de forma diferente).  
+4. Ligue o Bluetooth do PC e procure por um novo dispositivo. Se aparecer **Xbox Wireless Controller**, está pronto.
 
-🎮 Configuração do Controle
-Para que o mapeamento funcione corretamente, o controle deve ser reconhecido pelo Windows como Xbox Wireless Controller.
+---
 
-Desligue o controle.
+## 📜 Código Python: Mapeamento Realista
 
-Segure RB + Home (ou a combinação específica do seu modelo) para entrar no modo X-Input.
-
-No Windows, verifique em joy.cpl se os botões respondem corretamente.
-
-
-Como resolver o modo do controle:
-Para o Arduino, você quer que ele seja reconhecido como Xbox Controller (X-Input). No BSP-G6, tente o seguinte:
-
-Desligue o Bluetooth do PC.
-
-Desligue o controle.
-
-Segure o botão RB (R1) e, enquanto segura, aperte o botão HOME para ligar. (As luzes devem piscar de um jeito diferente).
-
-Ligue o Bluetooth do PC e procure por um novo dispositivo. Se aparecer "Xbox Wireless Controller", você venceu.
-
-
-
+```python
 import pygame
 import sys
 
@@ -84,7 +80,6 @@ try:
         pygame.event.pump()
 
         # 1. ANALÓGICOS (Eixos)
-        # Aplicando Deadzone de 15% para realismo
         deadzone = 0.15
 
         # Analógico Esquerdo (Movimento)
@@ -100,9 +95,8 @@ try:
             print(f"Stick Direito  -> X: {rx:.2f} | Y: {ry:.2f}")
 
         # 2. GATILHOS (LT e RT)
-        # No Xbox Wireless, os eixos 4 e 5 variam de -1.0 (solto) a 1.0 (pressionado)
-        lt = (controle.get_axis(4) + 1) / 2 # Normaliza para 0.0 a 1.0
-        rt = (controle.get_axis(5) + 1) / 2 # Normaliza para 0.0 a 1.0
+        lt = (controle.get_axis(4) + 1) / 2  # 0.0 a 1.0
+        rt = (controle.get_axis(5) + 1) / 2  # 0.0 a 1.0
         
         if lt > 0.1: print(f"Gatilho LT: {int(lt*100)}%")
         if rt > 0.1: print(f"Gatilho RT: {int(rt*100)}%")
@@ -123,7 +117,7 @@ try:
                 elif x == -1: direcao += " Esquerda"
                 if direcao: print(f"D-Pad: {direcao}")
 
-        pygame.time.wait(10) # 100 FPS para resposta imediata
+        pygame.time.wait(10)  # 100 FPS para resposta imediata
 
 except KeyboardInterrupt:
     print("\nMapeamento encerrado.")
