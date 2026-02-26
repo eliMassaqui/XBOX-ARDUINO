@@ -83,7 +83,7 @@ except KeyboardInterrupt:
     pygame.quit()
 ```
 
-```wiring
+```cpp
 #include <Servo.h>
 
 Servo meuServo;
